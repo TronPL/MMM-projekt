@@ -28,7 +28,8 @@ int main()
  int i,j,total;
  double a2,a1,a0,b0,w;
  double A,B;
- 
+ int r_sygnal=0;
+
  // wczytanie parametrów modelu
  a2=2;//cout << "\n a2 = "; cin >> a2;  //tu powinno być T podane przez usera
  a1=1;//cout << "\n a1 = "; cin >> a1;
@@ -37,7 +38,8 @@ int main()
 
  A=4; //ograniczenia dla wejścia
  B=A;
-
+ 
+ cout << "\n Rodzaj sygnału: 1 skok, 2 sinus = "; cin >> r_sygnal;
  cout << "\n T = "; cin >> a2;
  cout << "\n A = "; cin >> A;
  cout << "\n B = "; cin >> B;
@@ -47,22 +49,30 @@ int main()
  total=sizeof(u)/sizeof(u[0]); // rozmiar wektorów danych
  w=2.0*PI*L/T; // częstotliwość sinusoidy
 
+
  for(i=0; i<total; i++) // sygnał wejściowy i jego pochodne
  {
-    u[i]=M*sin(w*i*h); // sygnał wejściowy: u=M*sin(w*t) , t=i*h
-
+    if(r_sygnal==2)
+    {
+        u[i]=M*sin(w*i*h); // sygnał wejściowy: u=M*sin(w*t) , t=i*h
+    }
+    else if (r_sygnal==1)
+    {
+        u[i]=7;
+    }
+    
     if(u[i] < A && u[i] > -A)
-    {
-        u[i]=u[i]*(B/A);
-    }
-    else if(u[i] <= -A)
-    {
-        u[i] = -A;
-    }
-    else if(u[i] >= A)
-    {
-        u[i] = A;
-    }
+        {
+            u[i]=u[i]*(B/A);
+        }
+        else if(u[i] <= -A)
+        {
+            u[i] = -A;
+        }
+        else if(u[i] >= A)
+        {
+            u[i] = A;
+        }
  }
 
  y[0]=0; y1p[0]=0; y2p[0]=0; // zerowe warunki początkowe
